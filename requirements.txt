@@ -48,3 +48,5 @@ langchain-community
 PyMuPDF
 docx2txt
 python-docx
+chromadb
+beautifulsoup4

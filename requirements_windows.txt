@@ -146,3 +146,11 @@ wrapt==1.17.2
 yarl==1.18.3
 zipp==3.21.0
 zstandard==0.23.0
+python-dotenv
+streamlit
+langchain
+langchain_openai
+langchain-community
+PyMuPDF
+docx2txt
+python-docx
