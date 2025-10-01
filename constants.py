@@ -110,3 +110,16 @@ NO_DOC_MATCH_MESSAGE = """
 CONVERSATION_LOG_ERROR_MESSAGE = "過去の会話履歴の表示に失敗しました。"
 GET_LLM_RESPONSE_ERROR_MESSAGE = "回答生成に失敗しました。"
 DISP_ANSWER_ERROR_MESSAGE = "回答表示に失敗しました。"
+
+# ==========================================
+# RAG関連の設定値
+# ==========================================
+RETRIEVER_DOCS_NUM = 5          # 取得する関連ドキュメント数
+CHUNK_SIZE = 500                # チャンクサイズ
+CHUNK_OVERLAP = 50              # チャンクの重なり
+
+# ==========================================
+# その他
+# ==========================================
+ANSWER_MODE_1 = "社内文書検索"
+ANSWER_MODE_2 = "社内問い合わせ"

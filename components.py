@@ -325,3 +325,11 @@ def display_contact_llm_response(llm_response):
         content["file_info_list"] = file_info_list
 
     return content
+
+def display_select_mode():
+    st.sidebar.title("利用目的")
+    mode = st.sidebar.radio(
+        "選択してください",
+        (ct.ANSWER_MODE_1, ct.ANSWER_MODE_2)
+    )
+    st.session_state.mode = mode
