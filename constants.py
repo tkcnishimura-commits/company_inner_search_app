@@ -7,7 +7,6 @@
 ############################################################
 from langchain_community.document_loaders import PyMuPDFLoader, Docx2txtLoader, TextLoader
 from langchain_community.document_loaders.csv_loader import CSVLoader
-import constants as ct
 
 
 ############################################################
