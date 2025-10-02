@@ -45,17 +45,17 @@ def display_initial_ai_message():
         st.markdown("こんにちは。私は社内文書の情報をもとに回答する生成AIチャットボットです。上記で利用目的を選択し、画面下部のチャット欄からメッセージを送信してください。")
 
         # 「社内文書検索」の機能説明
-        st.markdown("**【「社内文書検索」を選択した場合】**")
+        #st.markdown("**【「社内文書検索」を選択した場合】**")
         # 「st.info()」を使うと青枠で表示される
-        st.info("入力内容と関連性が高い社内文書のありかを検索できます。")
+        #st.info("入力内容と関連性が高い社内文書のありかを検索できます。")
         # 「st.code()」を使うとコードブロックの装飾で表示される
         # 「wrap_lines=True」で折り返し設定、「language=None」で非装飾とする
-        st.code("【入力例】\n社員の育成方針に関するMTGの議事録", wrap_lines=True, language=None)
+        #st.code("【入力例】\n社員の育成方針に関するMTGの議事録", wrap_lines=True, language=None)
 
         # 「社内問い合わせ」の機能説明
-        st.markdown("**【「社内問い合わせ」を選択した場合】**")
-        st.info("質問・要望に対して、社内文書の情報をもとに回答を得られます。")
-        st.code("【入力例】\n人事部に所属している従業員情報を一覧化して", wrap_lines=True, language=None)
+        #st.markdown("**【「社内問い合わせ」を選択した場合】**")
+        #st.info("質問・要望に対して、社内文書の情報をもとに回答を得られます。")
+        #st.code("【入力例】\n人事部に所属している従業員情報を一覧化して", wrap_lines=True, language=None)
 
 
 def display_conversation_log():
@@ -326,10 +326,19 @@ def display_contact_llm_response(llm_response):
 
     return content
 
-def display_select_mode():
+ddef display_select_mode():
     st.sidebar.title("利用目的")
     mode = st.sidebar.radio(
         "選択してください",
         (ct.ANSWER_MODE_1, ct.ANSWER_MODE_2)
     )
     st.session_state.mode = mode
+
+    # 選択肢ごとに入力例をサイドバーに表示
+    if mode == ct.ANSWER_MODE_1:
+        st.sidebar.markdown("💡 **入力例**")
+        st.sidebar.info("社員の育成方針に関するMTGの議事録")
+    elif mode == ct.ANSWER_MODE_2:
+        st.sidebar.markdown("💡 **入力例**")
+        st.sidebar.info("人事部に所属している従業員情報を一覧化して")
+
