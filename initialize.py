@@ -19,7 +19,7 @@ from langchain.text_splitter import CharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
 from constants import CHUNK_SIZE, CHUNK_OVERLAP, RETRIEVER_DOCS_NUM
-
+import constants as ct
 
 
 ############################################################

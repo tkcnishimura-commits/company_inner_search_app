@@ -7,7 +7,7 @@
 ############################################################
 from langchain_community.document_loaders import PyMuPDFLoader, Docx2txtLoader, TextLoader
 from langchain_community.document_loaders.csv_loader import CSVLoader
-
+import constants as ct
 
 ############################################################
 # 共通変数の定義
@@ -119,7 +119,7 @@ CHUNK_SIZE = 500                # チャンクサイズ
 CHUNK_OVERLAP = 50              # チャンクの重なり
 
 # ==========================================
-# その他
+# モード設定
 # ==========================================
 ANSWER_MODE_1 = "社内文書検索"
 ANSWER_MODE_2 = "社内問い合わせ"
