@@ -19,7 +19,12 @@ from langchain.text_splitter import CharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
 from constants import CHUNK_SIZE, CHUNK_OVERLAP, RETRIEVER_DOCS_NUM
+#from utils import load_csv_as_single_doc
 import constants as ct
+from utils import load_csv_as_row_docs
+#ct.SUPPORTED_EXTENSIONS[".csv"] = load_csv_as_single_doc
+ct.SUPPORTED_EXTENSIONS[".csv"] = load_csv_as_row_docs
+
 
 
 ############################################################
@@ -129,14 +134,35 @@ def initialize_retriever():
         separator="\n"
     )
 
-    # チャンク分割を実施
-    splitted_docs = text_splitter.split_documents(docs_all)
+    # CSVはすでに1行＝1Documentなので分割不要
+    docs_for_index = []
+    for doc in docs_all:
+        if doc.metadata.get("source", "").endswith(".csv"):
+            docs_for_index.append(doc)  # そのまま使う
+        else:
+        # PDFやtxtは分割
+            splitted = text_splitter.split_documents([doc])
+            docs_for_index.extend(splitted)
 
     # ベクターストアの作成
-    db = Chroma.from_documents(splitted_docs, embedding=embeddings)
+    db = Chroma.from_documents(docs_for_index, embedding=embeddings)
+
+    # チャンク分割を実施
+    #splitted_docs = text_splitter.split_documents(docs_all)
+
+    # ベクターストアの作成
+    #db = Chroma.from_documents(splitted_docs, embedding=embeddings)
 
     # ベクターストアを検索するRetrieverの作成
-    st.session_state.retriever = db.as_retriever(search_kwargs={"k":  RETRIEVER_DOCS_NUM})
+    #st.session_state.retriever = db.as_retriever(search_kwargs={"k":  RETRIEVER_DOCS_NUM})
+    st.session_state.retriever = db.as_retriever(
+    search_type="mmr",   # 多様性を考慮して結果を返す
+    search_kwargs={
+        "k": RETRIEVER_DOCS_NUM,  # ユーザーに返す件数
+        "fetch_k": 100            # 内部的に取得してから多様性を確保する件数
+    }
+)
+
 
 
 def initialize_session_state():
@@ -200,25 +226,44 @@ def recursive_file_check(path, docs_all):
         file_load(path, docs_all)
 
 
+#def file_load(path, docs_all):
+#    """
+#    ファイル内のデータ読み込み
+#
+#    Args:
+#        path: ファイルパス
+#        docs_all: データソースを格納する用のリスト
+#    """
+#    # ファイルの拡張子を取得
+#    file_extension = os.path.splitext(path)[1]
+#    # ファイル名（拡張子を含む）を取得
+#    file_name = os.path.basename(path)
+#
+#    # 想定していたファイル形式の場合のみ読み込む
+#    if file_extension in ct.SUPPORTED_EXTENSIONS:
+#        # ファイルの拡張子に合ったdata loaderを使ってデータ読み込み
+#        loader = ct.SUPPORTED_EXTENSIONS[file_extension](path)
+#        docs = loader.load()
+#        docs_all.extend(docs)
+
 def file_load(path, docs_all):
     """
     ファイル内のデータ読み込み
-
-    Args:
-        path: ファイルパス
-        docs_all: データソースを格納する用のリスト
     """
-    # ファイルの拡張子を取得
     file_extension = os.path.splitext(path)[1]
-    # ファイル名（拡張子を含む）を取得
     file_name = os.path.basename(path)
 
-    # 想定していたファイル形式の場合のみ読み込む
     if file_extension in ct.SUPPORTED_EXTENSIONS:
-        # ファイルの拡張子に合ったdata loaderを使ってデータ読み込み
-        loader = ct.SUPPORTED_EXTENSIONS[file_extension](path)
-        docs = loader.load()
-        docs_all.extend(docs)
+        loader_func = ct.SUPPORTED_EXTENSIONS[file_extension]
+        if loader_func is not None:
+            #docs = loader_func(path)
+            if file_extension == ".csv":
+            #docs_all.extend(docs)
+                docs = loader_func(path)
+            else:
+                loader = loader_func(path)
+                docs = loader.load()
+            docs_all.extend(docs)
 
 
 def adjust_string(s):

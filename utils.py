@@ -114,3 +114,51 @@ def get_llm_response(chat_message):
     st.session_state.chat_history.extend([HumanMessage(content=chat_message), llm_response["answer"]])
 
     return llm_response
+
+############################################################
+# CSVファイルを1ドキュメント化して読み込む関数
+############################################################
+#from langchain.schema import Document
+#import csv
+
+#def load_csv_as_single_doc(path):
+#    """
+#    CSVファイルを全行結合して1つのDocumentとして読み込む
+
+#    Args:
+#        path: CSVファイルパス
+#
+#    Returns:
+#        List[Document]: 全行をまとめた1つのDocumentをリストで返す
+#    """
+#    with open(path, encoding="utf-8") as f:
+#        reader = csv.reader(f)
+#        # 各行を文字列化して1つのテキストにまとめる
+#        lines = [", ".join(row) for row in reader]
+#        text = "\n".join(lines)
+#    # Documentオブジェクトとして返す
+#    return [Document(page_content=text, metadata={"source": path})]
+
+############################################################
+# CSVファイルを1行ずつドキュメント化して読み込む関数
+############################################################
+from langchain.schema import Document
+import csv
+
+def load_csv_as_row_docs(path):
+    """
+    CSVファイルを1行ずつDocumentとして読み込む
+
+    Args:
+        path: CSVファイルパス
+
+    Returns:
+        List[Document]: CSVの各行を1つのDocumentとしてリストで返す
+    """
+    docs = []
+    with open(path, encoding="utf-8") as f:
+        reader = csv.reader(f)
+        for row in reader:
+            text = ", ".join(row)
+            docs.append(Document(page_content=text, metadata={"source": path}))
+    return docs

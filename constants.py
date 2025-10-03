@@ -7,7 +7,9 @@
 ############################################################
 from langchain_community.document_loaders import PyMuPDFLoader, Docx2txtLoader, TextLoader
 from langchain_community.document_loaders.csv_loader import CSVLoader
-import constants as ct
+#from utils import load_csv_as_row_docs
+#import constants as ct
+#from utils import load_csv_as_single_doc
 
 ############################################################
 # 共通変数の定義
@@ -48,9 +50,14 @@ TEMPERATURE = 0.5
 # ==========================================
 RAG_TOP_FOLDER_PATH = "./data"
 SUPPORTED_EXTENSIONS = {
-    ".pdf": PyMuPDFLoader,
+    ".pdf": PyMuPDFLoader,  
     ".docx": Docx2txtLoader,
-    ".csv": lambda path: CSVLoader(path, encoding="utf-8")
+    #".csv": lambda path: CSVLoader(path, encoding="utf-8"),
+    #".csv": load_csv_as_single_doc,
+    ".csv": None,
+    #".csv": lambda path: CSVLoader(path, encoding="utf-8").load(),
+    #".csv": load_csv_as_row_docs,
+    ".txt": lambda path: TextLoader(path, encoding="utf-8")  # 追加
 }
 WEB_URL_LOAD_TARGETS = [
     "https://generative-ai.web-camp.io/"
@@ -114,7 +121,7 @@ DISP_ANSWER_ERROR_MESSAGE = "回答表示に失敗しました。"
 # ==========================================
 # RAG関連の設定値
 # ==========================================
-RETRIEVER_DOCS_NUM = 5          # 取得する関連ドキュメント数
+RETRIEVER_DOCS_NUM = 30          # 取得する関連ドキュメント数
 CHUNK_SIZE = 500                # チャンクサイズ
 CHUNK_OVERLAP = 50              # チャンクの重なり
 
