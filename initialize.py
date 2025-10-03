@@ -160,7 +160,7 @@ def initialize_retriever():
     search_type="similarity",
     search_kwargs={
         "k": RETRIEVER_DOCS_NUM,  # ユーザーに返す件数
-        "fetch_k": 100            # 内部的に取得してから多様性を確保する件数
+        #"fetch_k": 100            # 内部的に取得してから多様性を確保する件数
     }
 )
 
