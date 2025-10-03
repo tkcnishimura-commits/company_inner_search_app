@@ -156,7 +156,8 @@ def initialize_retriever():
     # ベクターストアを検索するRetrieverの作成
     #st.session_state.retriever = db.as_retriever(search_kwargs={"k":  RETRIEVER_DOCS_NUM})
     st.session_state.retriever = db.as_retriever(
-    search_type="mmr",   # 多様性を考慮して結果を返す
+    #search_type="mmr",   # 多様性を考慮して結果を返す
+    search_type="similarity",
     search_kwargs={
         "k": RETRIEVER_DOCS_NUM,  # ユーザーに返す件数
         "fetch_k": 100            # 内部的に取得してから多様性を確保する件数
