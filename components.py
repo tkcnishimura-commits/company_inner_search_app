@@ -34,15 +34,68 @@ def display_select_mode():
             options=[ct.ANSWER_MODE_1, ct.ANSWER_MODE_2],
             label_visibility="collapsed"
         )
-
+############################################################
+# 初期AIメッセージの表示
+############################################################
 
 def display_initial_ai_message():
     """
-    AIメッセージの初期表示
+    初期AIメッセージの表示（背景色・アイコン付き）
     """
-    with st.chat_message("assistant"):
-        # 「st.success()」とすると緑枠で表示される
-        st.markdown("こんにちは。私は社内文書の情報をもとに回答する生成AIチャットボットです。上記で利用目的を選択し、画面下部のチャット欄からメッセージを送信してください。")
+    # --- メイン案内メッセージ ---
+    main_message = """
+    こんにちは。私は社内文書の情報をもとに回答する生成AIチャットボットです。  
+    サイドバーで利用目的を選択し、画面下部のチャット欄からメッセージを送信してください。
+    """
+
+    # --- 注意メッセージ ---
+    attention_message = """
+    具体的に入力したほうが期待通りの回答を得やすいです。
+    """
+
+    # --- 💬 メインメッセージ（グリーン背景＋家アイコン） ---
+    st.markdown(
+        f"""
+        <div style="
+            display:flex;
+            align-items:center;
+            background-color:#e8f5e9;
+            border:1px solid #c8e6c9;
+            border-radius:10px;
+            padding:15px;
+            margin-bottom:10px;">
+            <span style='font-size:22px;margin-right:10px;'>🏠</span>
+            <span>{main_message}</span>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+    # --- ⚠ 注意メッセージ（イエロー背景＋警告アイコン） ---
+    st.markdown(
+        f"""
+        <div style="
+            display:flex;
+            align-items:center;
+            background-color:#fff8e1;
+            border:1px solid #ffe082;
+            border-radius:10px;
+            padding:12px;">
+            <span style='font-size:20px;margin-right:8px;'>⚠️</span>
+            <span>{attention_message}</span>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+
+#def display_initial_ai_message():
+#    """
+#    AIメッセージの初期表示
+#    """
+#    with st.chat_message("assistant"):
+#        # 「st.success()」とすると緑枠で表示される
+#        st.markdown("こんにちは。私は社内文書の情報をもとに回答する生成AIチャットボットです。上記で利用目的を選択し、画面下部のチャット欄からメッセージを送信してください。")
 
         # 「社内文書検索」の機能説明
         #st.markdown("**【「社内文書検索」を選択した場合】**")
@@ -337,6 +390,8 @@ def display_select_mode():
     )
     st.session_state.mode = mode
 
+    st.sidebar.markdown("---")
+
     # 選択肢ごとに説明・入力例をサイドバーに表示
     if mode == ct.ANSWER_MODE_1:
         # 「社内文書検索」の機能説明
@@ -353,5 +408,7 @@ def display_select_mode():
         # 入力例をコードブロックで表示
         st.sidebar.code("【入力例】\n人事部に所属している従業員情報を一覧化して",
                         wrap_lines=True, language=None)
+        
+    return mode
 
 
