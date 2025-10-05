@@ -64,7 +64,6 @@ def display_initial_ai_message():
             border-radius:10px;
             padding:15px;
             margin-bottom:10px;">
-            <span style='font-size:22px;margin-right:10px;'>🏠</span>
             <span>{main_message}</span>
         </div>
         """,
@@ -81,7 +80,6 @@ def display_initial_ai_message():
             border:1px solid #ffe082;
             border-radius:10px;
             padding:12px;">
-            <span style='font-size:20px;margin-right:8px;'>⚠️</span>
             <span>{attention_message}</span>
         </div>
         """,
